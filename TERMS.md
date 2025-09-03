@@ -52,7 +52,7 @@ Use of the software is entirely at your own risk.
 
 ## 7. Payments and Subscriptions
 - Certain features of PyEnvManager (Pro) require a paid license or subscription.  
-- All payments are processed by third-party providers (e.g., Gumroad, LemonSqueezy, Paddle).  
+- All payments are processed by third-party providers.  
 - Subscriptions renew automatically unless canceled before the renewal date.  
 - Each license key is intended for a single user or organization, as specified at purchase.  
 - Refunds, if applicable, are subject to the refund policy listed on the payment provider’s checkout page.  

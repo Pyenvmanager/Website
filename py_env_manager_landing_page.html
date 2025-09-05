@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PyEnvManager — The control plane for Python environments</title>
+  <meta name="description" content="PyEnvManager is the control plane for Python environments — from cleanup to compliance. Developers use it for safety and speed, teams for fleet visibility, and enterprises for policies & AI guardrails." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --ring: 239 84% 67%; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji'; }
+    .glow { box-shadow: 0 0 0 1px rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03); }
+    .glass { backdrop-filter: blur(10px); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.08); }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 selection:bg-emerald-300 selection:text-slate-900">
+  <!-- Decorative background -->
+  <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10">
+    <div class="absolute -top-40 -left-32 w-[36rem] h-[36rem] rounded-full blur-3xl opacity-20 bg-emerald-500"></div>
+    <div class="absolute -bottom-40 -right-32 w-[36rem] h-[36rem] rounded-full blur-3xl opacity-10 bg-cyan-500"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-slate-950/60 border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="h-16 flex items-center justify-between">
+        <a href="#" class="flex items-center gap-2">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 text-slate-950 font-black">Py</span>
+          <span class="font-semibold tracking-tight">PyEnvManager</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-6 text-sm text-slate-300">
+          <a href="#developers" class="hover:text-white">Developers</a>
+          <a href="#teams" class="hover:text-white">Teams</a>
+          <a href="#enterprise" class="hover:text-white">Enterprise</a>
+          <a href="#how" class="hover:text-white">How it works</a>
+          <a href="#pricing" class="hover:text-white">Pricing</a>
+        </nav>
+        <div class="hidden md:flex items-center gap-3">
+          <a href="#download" class="px-3 py-2 rounded-xl text-sm font-medium border border-white/10 hover:border-white/20">Download Free</a>
+          <a href="#demo" class="px-3 py-2 rounded-xl text-sm font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300">Book a Demo</a>
+        </div>
+        <button id="menu" class="md:hidden p-2 rounded-lg hover:bg-white/5" aria-label="Toggle navigation">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+      <div id="mobileNav" class="md:hidden hidden border-t border-white/5 py-3">
+        <div class="flex flex-col gap-2 text-sm text-slate-300">
+          <a href="#developers" class="px-2 py-2 rounded hover:bg-white/5">Developers</a>
+          <a href="#teams" class="px-2 py-2 rounded hover:bg-white/5">Teams</a>
+          <a href="#enterprise" class="px-2 py-2 rounded hover:bg-white/5">Enterprise</a>
+          <a href="#how" class="px-2 py-2 rounded hover:bg-white/5">How it works</a>
+          <a href="#pricing" class="px-2 py-2 rounded hover:bg-white/5">Pricing</a>
+          <div class="flex gap-2 pt-2">
+            <a href="#download" class="flex-1 text-center px-3 py-2 rounded-xl text-sm font-medium border border-white/10">Download Free</a>
+            <a href="#demo" class="flex-1 text-center px-3 py-2 rounded-xl text-sm font-semibold bg-emerald-400 text-slate-950">Book a Demo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-tight">The control plane for <span class="bg-gradient-to-br from-emerald-300 to-cyan-300 bg-clip-text text-transparent">Python environments</span></h1>
+          <p class="mt-5 text-lg text-slate-300">From cleanup to compliance. Developers use PyEnvManager for speed and safety. Teams get fleet visibility. Enterprises enforce policies and <span class="font-semibold text-white">AI Guardrails</span>.</p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a href="#download" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300">Download Free</a>
+            <a href="#teams" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold bg-white/10 hover:bg-white/15">See Team Dashboard</a>
+            <a href="#demo" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">Book a Demo</a>
+          </div>
+          <div class="mt-8 text-xs text-slate-400">Trusted by AI startups & data teams • Works with pip, conda, mamba, micromamba, venv, poetry</div>
+        </div>
+        <div class="glass rounded-3xl p-4 sm:p-6 glow">
+          <div class="aspect-[16/10] rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 border border-white/5 p-4 flex flex-col">
+            <div class="flex items-center gap-2 text-xs text-slate-400">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Live Fleet Overview
+            </div>
+            <div class="grid grid-cols-3 gap-3 mt-4 text-center">
+              <div class="rounded-xl bg-white/5 p-4">
+                <div class="text-3xl font-extrabold">1273</div>
+                <div class="text-xs text-slate-400">Environments</div>
+              </div>
+              <div class="rounded-xl bg-white/5 p-4">
+                <div class="text-3xl font-extrabold text-emerald-300">86</div>
+                <div class="text-xs text-slate-400">Orphaned</div>
+              </div>
+              <div class="rounded-xl bg-white/5 p-4">
+                <div class="text-3xl font-extrabold text-rose-300">312</div>
+                <div class="text-xs text-slate-400">Vulnerable</div>
+              </div>
+            </div>
+            <div class="mt-4 grid grid-cols-6 gap-1">
+              <!-- heatmap placeholder -->
+              <template id="heat"></template>
+            </div>
+            <div class="mt-4 text-xs text-slate-400">Vulnerability clusters by host • Export SBOM (CycloneDX)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Developers -->
+  <section id="developers" class="py-20 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-start">
+        <div>
+          <h2 class="text-3xl font-extrabold tracking-tight">Cleanup your Python environments — fast, safe, and secure</h2>
+          <ul class="mt-6 space-y-4 text-slate-300">
+            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> Safe delete with freed-space preview</li>
+            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> CVE warnings before you install</li>
+            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> Templates & one-click restore points</li>
+          </ul>
+          <div class="mt-8 flex gap-3">
+            <a href="#download" class="px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300">Get Started Free</a>
+            <a href="#pricing" class="px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">See Pricing</a>
+          </div>
+        </div>
+        <div class="glass rounded-3xl p-6 glow">
+          <div class="text-sm text-slate-300">Example install intercepted by Guardrails</div>
+          <pre class="mt-3 p-4 rounded-xl bg-black/60 overflow-auto text-sm"><code>$ pip install excel-helper
+
+✖ Blocked by AI Guardrails
+ • Package not found on PyPI (likely AI hallucination or typosquat)
+ • Did you mean: <span class="text-emerald-300">openpyxl</span>?
+
+Remediation:
+  pip install openpyxl==3.1.5
+
+Reason codes: [NOT_FOUND, POSSIBLE_TYPO, POLICY_DENYLIST]
+Event: logged to audit trail, request approval link issued.</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teams -->
+  <section id="teams" class="py-20 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="order-last lg:order-first glass rounded-3xl p-6 glow">
+          <div class="text-sm text-slate-300">Fleet dashboard (sample)</div>
+          <div class="mt-4 grid grid-cols-2 gap-4">
+            <div class="rounded-xl bg-white/5 p-4">
+              <div class="text-xs text-slate-400">Risk score</div>
+              <div class="text-3xl font-extrabold">8.2</div>
+              <div class="text-xs text-slate-400">(lower is better)</div>
+            </div>
+            <div class="rounded-xl bg-white/5 p-4">
+              <div class="text-xs text-slate-400">Top vuln package</div>
+              <div class="text-lg font-semibold">pillow &lt; 9.3</div>
+              <div class="text-xs text-slate-400">CVE-2022-4510</div>
+            </div>
+            <div class="rounded-xl bg-white/5 p-4 col-span-2">
+              <div class="text-xs text-slate-400 mb-2">Hosts with issues</div>
+              <div class="grid grid-cols-12 gap-1">
+                <!-- grid dots -->
+                <template id="dots"></template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h2 class="text-3xl font-extrabold tracking-tight">Fleet visibility across laptops, servers, and notebooks</h2>
+          <ul class="mt-6 space-y-4 text-slate-300">
+            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-cyan-400/20 text-cyan-300 items-center justify-center">◆</span> See every environment & package across your team</li>
+            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-cyan-400/20 text-cyan-300 items-center justify-center">◆</span> Track vulnerabilities & drift over time</li>
+            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-cyan-400/20 text-cyan-300 items-center justify-center">◆</span> Share templates & restore points to stay in sync</li>
+          </ul>
+          <div class="mt-8 flex gap-3">
+            <a href="#demo" class="px-5 py-3 rounded-2xl font-semibold bg-white/10 hover:bg-white/15">Try Team Dashboard</a>
+            <a href="#pricing" class="px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">Team Pricing</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enterprise -->
+  <section id="enterprise" class="py-20 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-start">
+        <div>
+          <h2 class="text-3xl font-extrabold tracking-tight">Compliance & AI Guardrails for AI/ML environments</h2>
+          <ul class="mt-6 space-y-4 text-slate-300">
+            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-rose-400/20 text-rose-300 items-center justify-center">!</span> Enforce deny/allow lists, pin versions, block unsafe sources</li>
+            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-rose-400/20 text-rose-300 items-center justify-center">!</span> Generate SBOMs (CycloneDX) & audit logs per build</li>
+            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-rose-400/20 text-rose-300 items-center justify-center">!</span> Headless CLI for CI/CD and servers</li>
+            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-rose-400/20 text-rose-300 items-center justify-center">!</span> Guard against hallucinated/poisoned PyPI installs</li>
+          </ul>
+          <div class="mt-8 flex gap-3">
+            <a href="#demo" class="px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300">Book an Enterprise Demo</a>
+            <a href="#" class="px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">Download Sample Reports</a>
+          </div>
+        </div>
+        <div class="glass rounded-3xl p-6 glow">
+          <div class="text-sm text-slate-300">Compliance artifacts (sample)</div>
+          <pre class="mt-3 p-4 rounded-xl bg-black/60 overflow-auto text-xs"><code>{
+  "sbom": "cyclonedx-json",
+  "components": [
+    {"name": "pillow", "version": "9.0.0", "cve": ["CVE-2022-4510"]},
+    {"name": "torch", "version": "2.3.1", "cve": []}
+  ],
+  "policy": {"deny": ["requests-unsafe"], "allow": ["conda-forge", "pypi-internal"]},
+  "attestation": {"source": "ci", "build": "#1247", "commit": "a1b2c3"}
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="py-20 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-extrabold tracking-tight text-center">One platform. Grows with you.</h2>
+      <div class="mt-10 grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-6 glow">
+          <div class="text-sm text-slate-400 mb-2">Step 1</div>
+          <h3 class="font-semibold">Developers</h3>
+          <p class="mt-2 text-slate-300">Scan, clean, and secure local environments. Intercept risky installs before they land.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 glow">
+          <div class="text-sm text-slate-400 mb-2">Step 2</div>
+          <h3 class="font-semibold">Teams</h3>
+          <p class="mt-2 text-slate-300">Share a fleet dashboard, track vulnerabilities & drift, standardize with templates.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 glow">
+          <div class="text-sm text-slate-400 mb-2">Step 3</div>
+          <h3 class="font-semibold">Enterprise</h3>
+          <p class="mt-2 text-slate-300">Enforce policies, export SBOMs, integrate SIEM, and enable AI Guardrails across CI/CD.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing (lightweight placeholder) -->
+  <section id="pricing" class="py-20 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-extrabold tracking-tight text-center">Simple, scalable pricing</h2>
+      <p class="mt-3 text-center text-slate-300">Start free. Upgrade when your team needs more.</p>
+      <div class="mt-10 grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-6 glow">
+          <h3 class="font-semibold">Free</h3>
+          <p class="mt-2 text-slate-300">Scan environments, basic dashboard, Jupyter launch.</p>
+          <p class="mt-4 text-sm text-slate-400">Upgrade to clean, delete, and view CVE details.</p>
+          <a href="#download" class="mt-6 inline-flex px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15">Download</a>
+        </div>
+        <div class="glass rounded-2xl p-6 glow border border-emerald-400/30">
+          <h3 class="font-semibold">Pro</h3>
+          <p class="mt-2 text-slate-300">Cleanup wizard, safe delete, CVE details, templates, exports.</p>
+          <p class="mt-4 text-sm text-slate-400">$5/mo or $50/yr</p>
+          <a href="#download" class="mt-6 inline-flex px-4 py-2 rounded-xl bg-emerald-400 text-slate-950 hover:bg-emerald-300">Start Pro</a>
+        </div>
+        <div class="glass rounded-2xl p-6 glow">
+          <h3 class="font-semibold">Small Teams</h3>
+          <p class="mt-2 text-slate-300">Fleet dashboard, restore points, shared analytics, team CLI.</p>
+          <p class="mt-4 text-sm text-slate-400">$100/user/yr • 10 seats min</p>
+          <a href="#demo" class="mt-6 inline-flex px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15">Talk to Sales</a>
+        </div>
+      </div>
+      <div class="mt-6 text-center text-sm text-slate-400">Enterprise: SSO/RBAC, SIEM, SBOMs, AI Guardrails, headless CLI for CI/CD • <a href="#demo" class="underline decoration-white/20 hover:decoration-white">Book a demo</a></div>
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="py-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="glass rounded-3xl p-10 text-center glow">
+        <h2 class="text-3xl font-extrabold tracking-tight">Close the blind spot in your AI/ML supply chain</h2>
+        <p class="mt-3 text-slate-300">From developer cleanup to enterprise compliance, PyEnvManager gives you the guardrails you need.</p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="#download" class="px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300">Download Free</a>
+          <a href="#demo" class="px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">Book a Demo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 text-slate-950 font-black">Py</span>
+            <span class="font-semibold">PyEnvManager</span>
+          </div>
+          <p class="mt-3 text-sm text-slate-400">The control plane for Python environments.</p>
+        </div>
+        <div class="text-sm text-slate-300 grid grid-cols-2 gap-3">
+          <a href="#developers" class="hover:text-white">Developers</a>
+          <a href="#teams" class="hover:text-white">Teams</a>
+          <a href="#enterprise" class="hover:text-white">Enterprise</a>
+          <a href="#how" class="hover:text-white">How it works</a>
+          <a href="#pricing" class="hover:text-white">Pricing</a>
+          <a href="#" class="hover:text-white">Docs (soon)</a>
+        </div>
+        <div class="text-sm text-slate-400">
+          <div>© <span id="year"></span> PyEnvManager. All rights reserved.</div>
+          <div class="mt-2">Made for teams who care about speed <span class="text-slate-500">and</span> safety.</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    document.getElementById('menu')?.addEventListener('click', () => {
+      const nav = document.getElementById('mobileNav');
+      nav.classList.toggle('hidden');
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Render simple heatmap blocks in hero & teams sections (decorative)
+    const heat = document.getElementById('heat');
+    if (heat) {
+      const parent = heat.parentElement;
+      for (let i = 0; i < 48; i++) {
+        const d = document.createElement('div');
+        d.className = 'aspect-square rounded-md bg-white/5';
+        const r = Math.random();
+        if (r > 0.8) d.classList.add('bg-rose-400/30');
+        if (r > 0.95) d.classList.add('bg-emerald-400/40');
+        parent.appendChild(d);
+      }
+    }
+
+    const dots = document.getElementById('dots');
+    if (dots) {
+      const parent = dots.parentElement;
+      for (let i = 0; i < 120; i++) {
+        const d = document.createElement('div');
+        d.className = 'aspect-square rounded-sm bg-white/5';
+        const r = Math.random();
+        if (r > 0.8) d.classList.add('bg-rose-400/30');
+        if (r > 0.95) d.classList.add('bg-emerald-400/40');
+        parent.appendChild(d);
+      }
+    }
+  </script>
+</body>
+</html>

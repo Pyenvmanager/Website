@@ -1,351 +1,864 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PyEnvManager — The control plane for Python environments</title>
-  <meta name="description" content="PyEnvManager is the control plane for Python environments — from cleanup to compliance. Developers use it for safety and speed, teams for fleet visibility, and enterprises for policies & AI guardrails." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root { --ring: 239 84% 67%; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji'; }
-    .glow { box-shadow: 0 0 0 1px rgba(255,255,255,.06), 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03); }
-    .glass { backdrop-filter: blur(10px); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.08); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyEnvManager — Docker Desktop for Python Virtual Environments</title>
+    <meta name="description" content="PyEnvManager is Docker Desktop for Python Virtual Environments — visual management for conda, mamba, and virtual environments. Professional environment lifecycle management for developers and teams.">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gray: {
+                            950: '#0a0a0a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .glow {
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
+        }
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(6, 182, 212, 0.2);
+        }
+        .fade-in {
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+        .stagger-6 { animation-delay: 0.6s; }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        body {
+            background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e293b 100%);
+            min-height: 100vh;
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 selection:bg-emerald-300 selection:text-slate-900">
-  <!-- Decorative background -->
-  <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-10">
-    <div class="absolute -top-40 -left-32 w-[36rem] h-[36rem] rounded-full blur-3xl opacity-20 bg-emerald-500"></div>
-    <div class="absolute -bottom-40 -right-32 w-[36rem] h-[36rem] rounded-full blur-3xl opacity-10 bg-cyan-500"></div>
-  </div>
-
-  <!-- Header -->
-  <header class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-slate-950/60 border-b border-white/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="h-16 flex items-center justify-between">
-        <a href="#" class="flex items-center gap-2">
-          <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 text-slate-950 font-black">Py</span>
-          <span class="font-semibold tracking-tight">PyEnvManager</span>
-        </a>
-        <nav class="hidden md:flex items-center gap-6 text-sm text-slate-300">
-          <a href="#developers" class="hover:text-white">Developers</a>
-          <a href="#teams" class="hover:text-white">Teams</a>
-          <a href="#enterprise" class="hover:text-white">Enterprise</a>
-          <a href="#how" class="hover:text-white">How it works</a>
-          <a href="#pricing" class="hover:text-white">Pricing</a>
-        </nav>
-        <div class="hidden md:flex items-center gap-3">
-          <a href="#download" class="px-3 py-2 rounded-xl text-sm font-medium border border-white/10 hover:border-white/20">Download Free</a>
-          <a href="#demo" class="px-3 py-2 rounded-xl text-sm font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300">Book a Demo</a>
-        </div>
-        <button id="menu" class="md:hidden p-2 rounded-lg hover:bg-white/5" aria-label="Toggle navigation">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
-      </div>
-      <div id="mobileNav" class="md:hidden hidden border-t border-white/5 py-3">
-        <div class="flex flex-col gap-2 text-sm text-slate-300">
-          <a href="#developers" class="px-2 py-2 rounded hover:bg-white/5">Developers</a>
-          <a href="#teams" class="px-2 py-2 rounded hover:bg-white/5">Teams</a>
-          <a href="#enterprise" class="px-2 py-2 rounded hover:bg-white/5">Enterprise</a>
-          <a href="#how" class="px-2 py-2 rounded hover:bg-white/5">How it works</a>
-          <a href="#pricing" class="px-2 py-2 rounded hover:bg-white/5">Pricing</a>
-          <div class="flex gap-2 pt-2">
-            <a href="#download" class="flex-1 text-center px-3 py-2 rounded-xl text-sm font-medium border border-white/10">Download Free</a>
-            <a href="#demo" class="flex-1 text-center px-3 py-2 rounded-xl text-sm font-semibold bg-emerald-400 text-slate-950">Book a Demo</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <section class="relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-      <div class="grid lg:grid-cols-2 gap-10 items-center">
-        <div>
-          <h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-tight">The control plane for <span class="bg-gradient-to-br from-emerald-300 to-cyan-300 bg-clip-text text-transparent">Python environments</span></h1>
-          <p class="mt-5 text-lg text-slate-300">From cleanup to compliance. Developers use PyEnvManager for speed and safety. Teams get fleet visibility. Enterprises enforce policies and <span class="font-semibold text-white">AI Guardrails</span>.</p>
-          <div class="mt-8 flex flex-col sm:flex-row gap-3">
-            <a href="#download" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300">Download Free</a>
-            <a href="#teams" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold bg-white/10 hover:bg-white/15">See Team Dashboard</a>
-            <a href="#demo" class="inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">Book a Demo</a>
-          </div>
-          <div class="mt-8 text-xs text-slate-400">Trusted by AI startups & data teams • Works with pip, conda, mamba, micromamba, venv, poetry</div>
-        </div>
-        <div class="glass rounded-3xl p-4 sm:p-6 glow">
-          <div class="aspect-[16/10] rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 border border-white/5 p-4 flex flex-col">
-            <div class="flex items-center gap-2 text-xs text-slate-400">
-              <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Live Fleet Overview
+<body class="text-white antialiased">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a class="flex items-center gap-2" href="#">
+                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 text-slate-950 font-black">Py</span>
+                    <span class="font-semibold tracking-tight text-white">PyEnvManager</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-6 text-sm text-slate-200">
+                    <a class="hover:text-white" href="#comparison">vs Docker Desktop</a>
+                    <a class="hover:text-white" href="#features">Features</a>
+                    <a class="hover:text-white" href="#pro">Pro</a>
+                    <a class="hover:text-white" href="#pricing">Pricing</a>
+                    <a class="hover:text-white" href="#download">Download</a>
+                </nav>
+                <div class="hidden md:flex items-center gap-3">
+                    <a class="px-3 py-2 rounded-xl text-sm font-medium border border-white/20 hover:border-white/30 text-slate-200" href="#download">Download Free</a>
+                    <a class="px-3 py-2 rounded-xl text-sm font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300" href="#demo">Book a Demo</a>
+                </div>
+                <button aria-label="Toggle navigation" class="md:hidden p-2 rounded-lg hover:bg-white/5" id="menu">
+                    <i data-lucide="menu" class="h-6 w-6"></i>
+                </button>
             </div>
-            <div class="grid grid-cols-3 gap-3 mt-4 text-center">
-              <div class="rounded-xl bg-white/5 p-4">
-                <div class="text-3xl font-extrabold">1273</div>
-                <div class="text-xs text-slate-400">Environments</div>
-              </div>
-              <div class="rounded-xl bg-white/5 p-4">
-                <div class="text-3xl font-extrabold text-emerald-300">86</div>
-                <div class="text-xs text-slate-400">Orphaned</div>
-              </div>
-              <div class="rounded-xl bg-white/5 p-4">
-                <div class="text-3xl font-extrabold text-rose-300">312</div>
-                <div class="text-xs text-slate-400">Vulnerable</div>
-              </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+            <div class="grid lg:grid-cols-2 gap-10 items-center">
+                <div class="fade-in">
+                    <div class="mb-4">
+                        <span class="bg-blue-600/20 text-blue-300 px-4 py-2 rounded-full text-sm font-medium border border-blue-600/30">
+                            Docker Desktop for Python Virtual Environments
+                        </span>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl font-black tracking-tight leading-tight">
+                        Finally, a <span class="bg-gradient-to-br from-emerald-300 to-cyan-300 bg-clip-text text-transparent">visual interface</span> for Python environments
+                    </h1>
+                    <p class="mt-5 text-lg text-slate-200">
+                        Manage conda, mamba, and virtual environments like you manage Docker containers. 
+                        Start free with visual discovery, upgrade to Pro for security scanning, cleanup wizards, and advanced analytics.
+                    </p>
+                    <div class="mt-8 flex flex-col sm:flex-row gap-3">
+                        <a class="inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300" href="#download">
+                            Download Free
+                        </a>
+                        <a class="inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold bg-white/10 hover:bg-white/15" href="#comparison">
+                            Why Like Docker Desktop?
+                        </a>
+                        <a class="inline-flex items-center justify-center px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20" href="#demo">
+                            Book a Demo
+                        </a>
+                    </div>
+                    <div class="mt-8 text-xs text-slate-300">
+                        Works with conda, mamba, micromamba, venv, poetry • <span class="text-emerald-300">Free: One-click Jupyter launch</span> • <span class="text-emerald-300">Pro: CVE scanning, cleanup wizards, templates</span>
+                    </div>
+                </div>
+                
+                <!-- Hero Dashboard Mockup -->
+                <div class="glass rounded-3xl p-4 sm:p-6 glow fade-in stagger-1">
+                    <div class="aspect-[16/10] rounded-2xl bg-gradient-to-br from-slate-950 to-black border border-white/10 p-4 flex flex-col">
+                        <div class="flex items-center gap-2 text-xs text-slate-300">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> 
+                            Python Environment Dashboard
+                        </div>
+                        <div class="grid grid-cols-3 gap-3 mt-4 text-center">
+                            <div class="rounded-xl bg-white/10 p-4">
+                                <div class="text-3xl font-extrabold text-white">24</div>
+                                <div class="text-xs text-slate-300">Environments</div>
+                            </div>
+                            <div class="rounded-xl bg-white/10 p-4">
+                                <div class="text-3xl font-extrabold text-emerald-300">8.2GB</div>
+                                <div class="text-xs text-slate-300">Total Size</div>
+                            </div>
+                            <div class="rounded-xl bg-white/10 p-4">
+                                <div class="text-3xl font-extrabold text-yellow-300">3</div>
+                                <div class="text-xs text-slate-300">Unused</div>
+                            </div>
+                        </div>
+                        <div class="mt-4 grid grid-cols-6 gap-1" id="envHeatmap">
+                            <!-- Environment heatmap will be generated by JS -->
+                        </div>
+                        <div class="mt-4 text-xs text-slate-300">Environment usage by size • Click to analyze packages</div>
+                    </div>
+                </div>
             </div>
-            <div class="mt-4 grid grid-cols-6 gap-1">
-              <!-- heatmap placeholder -->
-              <template id="heat"></template>
+        </div>
+    </section>
+
+    <!-- Docker Desktop Comparison -->
+    <section id="comparison" class="py-20 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-extrabold tracking-tight">If You Love Docker Desktop, You'll Love PyEnvManager</h2>
+                <p class="text-xl text-slate-200 max-w-3xl mx-auto">
+                    Same professional workflow, visual clarity, and ease of use — but designed specifically for Python environments
+                </p>
             </div>
-            <div class="mt-4 text-xs text-slate-400">Vulnerability clusters by host • Export SBOM (CycloneDX)</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Developers -->
-  <section id="developers" class="py-20 border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid lg:grid-cols-2 gap-12 items-start">
-        <div>
-          <h2 class="text-3xl font-extrabold tracking-tight">Cleanup your Python environments — fast, safe, and secure</h2>
-          <ul class="mt-6 space-y-4 text-slate-300">
-            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> Safe delete with freed-space preview</li>
-            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> CVE warnings before you install</li>
-            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> Templates & one-click restore points</li>
-          </ul>
-          <div class="mt-8 flex gap-3">
-            <a href="#download" class="px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300">Get Started Free</a>
-            <a href="#pricing" class="px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">See Pricing</a>
-          </div>
-        </div>
-        <div class="glass rounded-3xl p-6 glow">
-          <div class="text-sm text-slate-300">Example install intercepted by Guardrails</div>
-          <pre class="mt-3 p-4 rounded-xl bg-black/60 overflow-auto text-sm"><code>$ pip install excel-helper
-
-✖ Blocked by AI Guardrails
- • Package not found on PyPI (likely AI hallucination or typosquat)
- • Did you mean: <span class="text-emerald-300">openpyxl</span>?
-
-Remediation:
-  pip install openpyxl==3.1.5
-
-Reason codes: [NOT_FOUND, POSSIBLE_TYPO, POLICY_DENYLIST]
-Event: logged to audit trail, request approval link issued.</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Teams -->
-  <section id="teams" class="py-20 border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <div class="order-last lg:order-first glass rounded-3xl p-6 glow">
-          <div class="text-sm text-slate-300">Fleet dashboard (sample)</div>
-          <div class="mt-4 grid grid-cols-2 gap-4">
-            <div class="rounded-xl bg-white/5 p-4">
-              <div class="text-xs text-slate-400">Risk score</div>
-              <div class="text-3xl font-extrabold">8.2</div>
-              <div class="text-xs text-slate-400">(lower is better)</div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <!-- Docker Desktop -->
+                <div class="glass rounded-3xl p-8 glow fade-in">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <i data-lucide="container" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">Docker Desktop</h3>
+                            <p class="text-slate-400">Container Management</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-slate-300">
+                        <li class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                            Visual container dashboard
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                            Resource usage monitoring
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                            Image layer inspection
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                            One-click container cleanup
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span>
+                            Professional desktop app
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- PyEnvManager -->
+                <div class="glass rounded-3xl p-8 glow fade-in stagger-1 border border-emerald-500/20">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-emerald-600 rounded-lg flex items-center justify-center">
+                            <span class="font-bold text-slate-950">Py</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold">PyEnvManager</h3>
+                            <p class="text-slate-400">Python Environment Management</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-3 text-slate-300">
+                        <li class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            Visual environment dashboard
+                        </li>
+                        <li class="flex items-center gap-3">  
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            Disk usage & package monitoring
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            One-click Jupyter launch in any environment
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            Package dependency inspection
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            Smart environment cleanup
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            Professional desktop app
+                        </li>
+                    </ul>
+                    <div class="mt-6 p-4 bg-emerald-900/20 border border-emerald-600/30 rounded-lg">
+                        <p class="text-sm text-emerald-300 font-medium">
+                            ✨ Plus: CVE security scanning, SBOM exports, and environment templates (Pro)
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="rounded-xl bg-white/5 p-4">
-              <div class="text-xs text-slate-400">Top vuln package</div>
-              <div class="text-lg font-semibold">pillow &lt; 9.3</div>
-              <div class="text-xs text-slate-400">CVE-2022-4510</div>
+            
+            <div class="text-center mt-12 fade-in stagger-2">
+                <p class="text-lg text-slate-300 mb-6">
+                    The same intuitive, professional experience you love — but for Python environments
+                </p>
+                <a href="#features" class="inline-flex items-center justify-center px-8 py-4 rounded-2xl font-semibold bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 hover:from-emerald-300 hover:to-cyan-300 transition-all">
+                    See All Features
+                </a>
             </div>
-            <div class="rounded-xl bg-white/5 p-4 col-span-2">
-              <div class="text-xs text-slate-400 mb-2">Hosts with issues</div>
-              <div class="grid grid-cols-12 gap-1">
-                <!-- grid dots -->
-                <template id="dots"></template>
-              </div>
+        </div>
+    </section>
+
+    <!-- Pain Points Section -->
+    <section class="py-20 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-extrabold tracking-tight">Stop Fighting with Command-Line Environment Management</h2>
+                <p class="text-xl text-slate-200 max-w-3xl mx-auto">
+                    You wouldn't manage Docker containers with CLI only. Why manage Python environments that way?
+                </p>
             </div>
-          </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass rounded-2xl p-6 glow border border-red-500/20 fade-in">
+                    <div class="w-12 h-12 bg-red-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="terminal" class="w-6 h-6 text-red-400"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3 text-red-300">Jupyter Launch Struggles</h3>
+                    <p class="text-slate-400 text-sm">
+                        "conda activate my-env... then jupyter lab... wait, which port? Is the kernel using the right environment? This is so confusing..."
+                    </p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 glow border border-orange-500/20 fade-in stagger-1">
+                    <div class="w-12 h-12 bg-orange-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="hard-drive" class="w-6 h-6 text-orange-400"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3 text-orange-300">Disk Space Mystery</h3>
+                    <p class="text-slate-400 text-sm">
+                        "My disk is full again. Which environments are taking up all this space? Time to guess and check..."
+                    </p>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 glow border border-yellow-500/20 fade-in stagger-2">
+                    <div class="w-12 h-12 bg-yellow-600/20 rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="clock" class="w-6 h-6 text-yellow-400"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-3 text-yellow-300">Environment Chaos</h3>
+                    <p class="text-slate-400 text-sm">
+                        "Where did I put that environment again? Let me run conda env list for the 50th time today..."
+                    </p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 fade-in stagger-3">
+                <p class="text-2xl font-semibold text-white mb-4">Sound Familiar?</p>
+                <p class="text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
+                    PyEnvManager brings the visual, professional experience you know from Docker Desktop to Python environment management.
+                </p>
+                <a href="#features" class="inline-flex items-center justify-center px-8 py-4 rounded-2xl font-semibold bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 hover:from-emerald-300 hover:to-cyan-300 transition-all">
+                    See How We Solve This
+                </a>
+            </div>
         </div>
-        <div>
-          <h2 class="text-3xl font-extrabold tracking-tight">Fleet visibility across laptops, servers, and notebooks</h2>
-          <ul class="mt-6 space-y-4 text-slate-300">
-            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-cyan-400/20 text-cyan-300 items-center justify-center">◆</span> See every environment & package across your team</li>
-            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-cyan-400/20 text-cyan-300 items-center justify-center">◆</span> Track vulnerabilities & drift over time</li>
-            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-cyan-400/20 text-cyan-300 items-center justify-center">◆</span> Share templates & restore points to stay in sync</li>
-          </ul>
-          <div class="mt-8 flex gap-3">
-            <a href="#demo" class="px-5 py-3 rounded-2xl font-semibold bg-white/10 hover:bg-white/15">Try Team Dashboard</a>
-            <a href="#pricing" class="px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">Team Pricing</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Enterprise -->
-  <section id="enterprise" class="py-20 border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid lg:grid-cols-2 gap-12 items-start">
-        <div>
-          <h2 class="text-3xl font-extrabold tracking-tight">Compliance & AI Guardrails for AI/ML environments</h2>
-          <ul class="mt-6 space-y-4 text-slate-300">
-            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-rose-400/20 text-rose-300 items-center justify-center">!</span> Enforce deny/allow lists, pin versions, block unsafe sources</li>
-            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-rose-400/20 text-rose-300 items-center justify-center">!</span> Generate SBOMs (CycloneDX) & audit logs per build</li>
-            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-rose-400/20 text-rose-300 items-center justify-center">!</span> Headless CLI for CI/CD and servers</li>
-            <li class="flex gap-3"><span class="mt-1 inline-flex w-5 h-5 rounded-full bg-rose-400/20 text-rose-300 items-center justify-center">!</span> Guard against hallucinated/poisoned PyPI installs</li>
-          </ul>
-          <div class="mt-8 flex gap-3">
-            <a href="#demo" class="px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300">Book an Enterprise Demo</a>
-            <a href="#" class="px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">Download Sample Reports</a>
-          </div>
-        </div>
-        <div class="glass rounded-3xl p-6 glow">
-          <div class="text-sm text-slate-300">Compliance artifacts (sample)</div>
-          <pre class="mt-3 p-4 rounded-xl bg-black/60 overflow-auto text-xs"><code>{
-  "sbom": "cyclonedx-json",
-  "components": [
-    {"name": "pillow", "version": "9.0.0", "cve": ["CVE-2022-4510"]},
-    {"name": "torch", "version": "2.3.1", "cve": []}
-  ],
-  "policy": {"deny": ["requests-unsafe"], "allow": ["conda-forge", "pypi-internal"]},
-  "attestation": {"source": "ci", "build": "#1247", "commit": "a1b2c3"}
-}</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- Features Section -->
+    <section id="features" class="py-20 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-extrabold tracking-tight">Professional Environment Management</h2>
+                <p class="text-xl text-slate-200 max-w-2xl mx-auto">
+                    All the visual management capabilities you expect, designed specifically for Python environments
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Visual Discovery -->
+                <div class="glass rounded-2xl p-8 hover-lift fade-in stagger-1 glow">
+                    <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="search" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Visual Discovery</h3>
+                    <p class="text-slate-200">
+                        See all your conda, mamba, micromamba, and virtual environments in one dashboard - just like Docker containers
+                    </p>
+                </div>
 
-  <!-- How it works -->
-  <section id="how" class="py-20 border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-extrabold tracking-tight text-center">One platform. Grows with you.</h2>
-      <div class="mt-10 grid md:grid-cols-3 gap-6">
-        <div class="glass rounded-2xl p-6 glow">
-          <div class="text-sm text-slate-400 mb-2">Step 1</div>
-          <h3 class="font-semibold">Developers</h3>
-          <p class="mt-2 text-slate-300">Scan, clean, and secure local environments. Intercept risky installs before they land.</p>
-        </div>
-        <div class="glass rounded-2xl p-6 glow">
-          <div class="text-sm text-slate-400 mb-2">Step 2</div>
-          <h3 class="font-semibold">Teams</h3>
-          <p class="mt-2 text-slate-300">Share a fleet dashboard, track vulnerabilities & drift, standardize with templates.</p>
-        </div>
-        <div class="glass rounded-2xl p-6 glow">
-          <div class="text-sm text-slate-400 mb-2">Step 3</div>
-          <h3 class="font-semibold">Enterprise</h3>
-          <p class="mt-2 text-slate-300">Enforce policies, export SBOMs, integrate SIEM, and enable AI Guardrails across CI/CD.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+                <!-- Resource Monitoring -->
+                <div class="glass rounded-2xl p-8 hover-lift fade-in stagger-2 glow">
+                    <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="pie-chart" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">Resource Monitoring</h3>
+                    <p class="text-slate-200">
+                        Monitor disk usage and package sizes with the same clarity Docker Desktop provides for container resources
+                    </p>
+                </div>
 
-  <!-- Pricing (lightweight placeholder) -->
-  <section id="pricing" class="py-20 border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-extrabold tracking-tight text-center">Simple, scalable pricing</h2>
-      <p class="mt-3 text-center text-slate-300">Start free. Upgrade when your team needs more.</p>
-      <div class="mt-10 grid md:grid-cols-3 gap-6">
-        <div class="glass rounded-2xl p-6 glow">
-          <h3 class="font-semibold">Free</h3>
-          <p class="mt-2 text-slate-300">Scan environments, basic dashboard, Jupyter launch.</p>
-          <p class="mt-4 text-sm text-slate-400">Upgrade to clean, delete, and view CVE details.</p>
-          <a href="#download" class="mt-6 inline-flex px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15">Download</a>
-        </div>
-        <div class="glass rounded-2xl p-6 glow border border-emerald-400/30">
-          <h3 class="font-semibold">Pro</h3>
-          <p class="mt-2 text-slate-300">Cleanup wizard, safe delete, CVE details, templates, exports.</p>
-          <p class="mt-4 text-sm text-slate-400">$5/mo or $50/yr</p>
-          <a href="#download" class="mt-6 inline-flex px-4 py-2 rounded-xl bg-emerald-400 text-slate-950 hover:bg-emerald-300">Start Pro</a>
-        </div>
-        <div class="glass rounded-2xl p-6 glow">
-          <h3 class="font-semibold">Small Teams</h3>
-          <p class="mt-2 text-slate-300">Fleet dashboard, restore points, shared analytics, team CLI.</p>
-          <p class="mt-4 text-sm text-slate-400">$100/user/yr • 10 seats min</p>
-          <a href="#demo" class="mt-6 inline-flex px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15">Talk to Sales</a>
-        </div>
-      </div>
-      <div class="mt-6 text-center text-sm text-slate-400">Enterprise: SSO/RBAC, SIEM, SBOMs, AI Guardrails, headless CLI for CI/CD • <a href="#demo" class="underline decoration-white/20 hover:decoration-white">Book a demo</a></div>
-    </div>
-  </section>
+                <!-- Package Insights -->
+                <div class="glass rounded-2xl p-8 hover-lift fade-in stagger-3 glow border border-purple-500/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
+                            <i data-lucide="package" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <span class="bg-purple-400/20 text-purple-300 px-2 py-1 rounded text-xs font-medium">Pro Enhanced</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Package Insights</h3>
+                    <p class="text-slate-400 mb-3">
+                        Detailed package information and dependencies - like inspecting container layers but for Python packages
+                    </p>
+                    <div class="text-xs text-purple-300 bg-purple-900/20 rounded-lg p-2 border border-purple-700/30">
+                        <strong>Pro:</strong> CVE scanning, dependency analysis, security reports
+                    </div>
+                </div>
 
-  <!-- Closing CTA -->
-  <section class="py-20">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="glass rounded-3xl p-10 text-center glow">
-        <h2 class="text-3xl font-extrabold tracking-tight">Close the blind spot in your AI/ML supply chain</h2>
-        <p class="mt-3 text-slate-300">From developer cleanup to enterprise compliance, PyEnvManager gives you the guardrails you need.</p>
-        <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-          <a href="#download" class="px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300">Download Free</a>
-          <a href="#demo" class="px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">Book a Demo</a>
+                <!-- Smart Cleanup -->
+                <div class="glass rounded-2xl p-8 hover-lift fade-in stagger-1 glow border border-blue-500/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center">
+                            <i data-lucide="trash-2" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <span class="bg-blue-400/20 text-blue-300 px-2 py-1 rounded text-xs font-medium">Pro Enhanced</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Smart Cleanup</h3>
+                    <p class="text-slate-400 mb-3">
+                        Remove unused environments safely - as easy as removing containers in Docker Desktop
+                    </p>
+                    <div class="text-xs text-blue-300 bg-blue-900/20 rounded-lg p-2 border border-blue-700/30">
+                        <strong>Pro:</strong> Space preview, cleanup wizard, bulk operations
+                    </div>
+                </div>
+
+                <!-- Desktop Application -->
+                <div class="glass rounded-2xl p-8 hover-lift fade-in stagger-2 glow border border-orange-500/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center">
+                            <i data-lucide="monitor" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <span class="bg-green-400/20 text-green-300 px-2 py-1 rounded text-xs font-medium">FREE</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">One-Click Jupyter Launch</h3>
+                    <p class="text-slate-400 mb-3">
+                        Launch Jupyter in any environment with a single click - no more command-line struggles with environment activation
+                    </p>
+                    <div class="text-xs text-green-300 bg-green-900/20 rounded-lg p-2 border border-green-700/30">
+                        <strong>Free:</strong> Native desktop app • Cross-platform • Instant Jupyter access
+                    </div>
+                </div>
+
+                <!-- Professional Interface -->
+                <div class="glass rounded-2xl p-8 hover-lift fade-in stagger-3 glow">
+                    <div class="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center mb-4">
+                        <i data-lucide="palette" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Professional Interface</h3>
+                    <p class="text-slate-400">
+                        Familiar, intuitive design that Docker Desktop users will feel right at home with
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="border-t border-white/5 py-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-3 gap-8">
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 text-slate-950 font-black">Py</span>
-            <span class="font-semibold">PyEnvManager</span>
-          </div>
-          <p class="mt-3 text-sm text-slate-400">The control plane for Python environments.</p>
+    <!-- Pro Features Section -->
+    <section id="pro" class="py-20 border-t border-white/5 bg-gradient-to-br from-emerald-950/20 to-cyan-950/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <div class="inline-flex items-center gap-2 bg-emerald-400/10 border border-emerald-400/20 rounded-full px-4 py-2 mb-4">
+                    <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                    <span class="text-emerald-300 text-sm font-medium">Pro Features</span>
+                </div>
+                <h2 class="text-3xl font-extrabold tracking-tight">Free gives you visibility. Pro helps you go further.</h2>
+                <p class="text-xl text-slate-300 max-w-3xl mx-auto mt-4">
+                    Start free with environment discovery. Upgrade to Pro when you need security scanning, 
+                    smart cleanup, and advanced environment management.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <div class="fade-in">
+                    <h3 class="text-2xl font-bold mb-6">Pro Features ($5/month or $50/year)</h3>
+                    <ul class="space-y-4 text-slate-300">
+                        <li class="flex gap-3">
+                            <span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> 
+                            Create environments with packages
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> 
+                            Environment templates (ML, SciPy, TensorFlow, etc.)
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> 
+                            Delete environments with freed space preview
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> 
+                            Cleanup wizard (orphan, duplicate, cache)
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> 
+                            Install packages in existing environments
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> 
+                            Security vulnerability scanning (CVE detection)
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> 
+                            Comprehensive package analysis (conda + pip)
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="mt-1 inline-flex w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 items-center justify-center">✓</span> 
+                            Advanced environment insights & metrics
+                        </li>
+                    </ul>
+                    <div class="mt-8 flex gap-3">
+                        <a class="px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300" href="#pricing">Get Started Free</a>
+                        <a class="px-5 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20" href="#pricing">See Pricing</a>
+                    </div>
+                </div>
+                
+                <div class="fade-in stagger-1">
+                    <div class="glass rounded-3xl p-6 glow">
+                        <div class="text-sm text-slate-300 mb-3">Pro Feature Preview</div>
+                        <div class="space-y-4">
+                            <!-- CVE Scanning Preview -->
+                            <div class="bg-red-900/20 border border-red-700/30 rounded-lg p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="shield-alert" class="w-4 h-4 text-red-400"></i>
+                                    <span class="text-red-300 font-medium text-sm">Security Scan Results</span>
+                                </div>
+                                <div class="text-xs text-red-300">
+                                    <div>⚠️ CVE-2023-1234 found in requests &lt; 2.31.0</div>
+                                    <div>✅ 247 packages scanned, 1 vulnerability found</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Cleanup Preview -->
+                            <div class="bg-blue-900/20 border border-blue-700/30 rounded-lg p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="trash-2" class="w-4 h-4 text-blue-400"></i>
+                                    <span class="text-blue-300 font-medium text-sm">Cleanup Wizard</span>
+                                </div>
+                                <div class="text-xs text-blue-300">
+                                    <div>🗑️ 3 unused environments (2.4 GB)</div>
+                                    <div>📦 Safe to delete: data-science-old, test-env-2023</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Template Preview -->
+                            <div class="bg-green-900/20 border border-green-700/30 rounded-lg p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="layers" class="w-4 h-4 text-green-400"></i>
+                                    <span class="text-green-300 font-medium text-sm">Environment Templates</span>
+                                </div>
+                                <div class="text-xs text-green-300">
+                                    <div>📊 Data Science • 🤖 ML/AI • 🌐 Web Dev</div>
+                                    <div>✨ Pre-configured with security-scanned packages</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16 fade-in stagger-2">
+                <div class="glass rounded-3xl p-8 max-w-4xl mx-auto glow">
+                    <h3 class="text-2xl font-bold mb-6">Free vs Pro: What's the Difference?</h3>
+                    <div class="grid md:grid-cols-2 gap-8 text-left">
+                        <div>
+                            <h4 class="font-semibold text-slate-300 mb-3">✅ Free Features</h4>
+                            <ul class="space-y-2 text-sm text-slate-400">
+                                <li>• Environment discovery & listing</li>
+                                <li>• <strong class="text-slate-300">One-click Jupyter launch in any environment</strong></li>
+                                <li>• Basic size analysis</li>
+                                <li>• Simple dashboard view</li>
+                                <li>• Environment details</li>
+                                <li>• Search & filtering</li>
+                                <li>• Create basic environments</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-emerald-300 mb-3">🚀 Pro Features ($5/mo)</h4>
+                            <ul class="space-y-2 text-sm text-slate-300">
+                                <li>• <strong>All in free</strong></li>
+                                <li>• <strong>Security vulnerability scanning</strong></li>
+                                <li>• <strong>Smart cleanup & deletion wizard</strong></li>
+                                <li>• <strong>Environment templates</strong></li>
+                                <li>• <strong>Package installation & management</strong></li>
+                                <li>• <strong>Advanced analytics & insights</strong></li>
+                                <li>• <strong>Dependency analysis</strong></li>
+                                <li>• <strong>CVE reporting & exports</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                        <a class="px-6 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300" href="#pricing">
+                            Start Free, Upgrade Later
+                        </a>
+                        <a class="px-6 py-3 rounded-2xl font-semibold border border-emerald-400/50 text-emerald-300 hover:bg-emerald-400/10" href="#demo">
+                            See Pro Demo
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="text-sm text-slate-300 grid grid-cols-2 gap-3">
-          <a href="#developers" class="hover:text-white">Developers</a>
-          <a href="#teams" class="hover:text-white">Teams</a>
-          <a href="#enterprise" class="hover:text-white">Enterprise</a>
-          <a href="#how" class="hover:text-white">How it works</a>
-          <a href="#pricing" class="hover:text-white">Pricing</a>
-          <a href="#" class="hover:text-white">Docs (soon)</a>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 border-t border-white/5">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-extrabold tracking-tight">Simple, Transparent Pricing</h2>
+                <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+                    Start free and upgrade when you need advanced features. No surprises, no hidden costs.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Free Plan -->
+                <div class="glass rounded-3xl p-8 glow fade-in">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-semibold">Free</h3>
+                        <div class="mt-2">
+                            <span class="text-4xl font-bold">$0</span>
+                            <span class="text-slate-400 ml-2">forever</span>
+                        </div>
+                        <p class="text-slate-400 mt-2">Perfect for individual developers</p>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            Environment discovery & listing
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            <strong>One-click Jupyter launch in any environment</strong>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            Basic size analysis
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            Visual dashboard
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            Search & filtering
+                        </li>
+                    </ul>
+                    
+                    <a href="#download" class="block w-full px-4 py-3 rounded-2xl font-semibold border border-white/20 text-center hover:bg-white/10 transition-colors">
+                        Download Free
+                    </a>
+                </div>
+                
+                <!-- Pro Plan -->
+                <div class="glass rounded-3xl p-8 glow border border-emerald-500/20 relative fade-in stagger-1">
+                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-emerald-400 text-slate-950 px-3 py-1 rounded-full text-sm font-medium">Most Popular</span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-semibold">Pro</h3>
+                        <div class="mt-2">
+                            <span class="text-4xl font-bold">$5</span>
+                            <span class="text-slate-400 ml-2">/month</span>
+                        </div>
+                        <p class="text-slate-400 mt-2">or $50/year (save 16%)</p>
+                        <p class="text-emerald-300 text-sm mt-1">Everything in Free, plus:</p>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            Security vulnerability scanning
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            Smart cleanup wizard
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            Environment templates
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            Package installation & management
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            Advanced analytics & insights
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center text-xs">✓</span>
+                            CVE reports & exports
+                        </li>
+                    </ul>
+                    
+                    <a href="#upgrade" class="block w-full px-4 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 text-center hover:bg-emerald-300 transition-colors">
+                        Upgrade to Pro
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 fade-in stagger-2">
+                <p class="text-slate-400 mb-4">
+                    Questions about pricing? Want to see Pro features in action?
+                </p>
+                <a href="#demo" class="inline-flex items-center justify-center px-6 py-3 rounded-2xl font-semibold border border-white/10 hover:border-white/20">
+                    Book a Demo
+                </a>
+            </div>
         </div>
-        <div class="text-sm text-slate-400">
-          <div>© <span id="year"></span> PyEnvManager. All rights reserved.</div>
-          <div class="mt-2">Made for teams who care about speed <span class="text-slate-500">and</span> safety.</div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="py-20 border-t border-white/5">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl font-extrabold tracking-tight">Download PyEnvManager</h2>
+                <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+                    Get started in minutes with our native desktop applications for Windows, macOS, and Linux
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="glass rounded-2xl p-6 text-center glow fade-in">
+                    <i data-lucide="monitor" class="w-12 h-12 text-blue-400 mx-auto mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-2">Windows</h3>
+                    <p class="text-sm text-slate-400 mb-4">Windows 10/11 • x64</p>
+                    <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors font-medium inline-block">
+                        Download .exe
+                    </a>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 text-center glow fade-in stagger-1">
+                    <i data-lucide="laptop" class="w-12 h-12 text-slate-400 mx-auto mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-2">macOS</h3>
+                    <p class="text-sm text-slate-400 mb-4">Intel & Apple Silicon</p>
+                    <button class="bg-slate-600 text-white px-6 py-2 rounded-lg hover:bg-slate-700 transition-colors font-medium">
+                        Coming Soon
+                    </button>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 text-center glow fade-in stagger-2">
+                    <i data-lucide="server" class="w-12 h-12 text-slate-400 mx-auto mb-4"></i>
+                    <h3 class="text-lg font-semibold mb-2">Linux</h3>
+                    <p class="text-sm text-slate-400 mb-4">AppImage & .deb</p>
+                    <button class="bg-slate-600 text-white px-6 py-2 rounded-lg hover:bg-slate-700 transition-colors font-medium">
+                        Coming Soon
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass rounded-2xl p-6 glow fade-in stagger-3">
+                    <h3 class="text-lg font-semibold mb-2">System Requirements</h3>
+                    <p class="text-sm text-slate-400 mb-4">
+                        Windows 10/11, 4GB RAM, 500MB disk space. 
+                        Supports conda, mamba, micromamba, and virtual environments.
+                    </p>
+                    <div class="bg-blue-600/20 border border-blue-500/30 rounded-lg p-4">
+                        <p class="text-sm text-blue-300 font-medium">
+                            💡 <strong>Docker Desktop users:</strong> You'll feel right at home with PyEnvManager's familiar interface and workflow
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 glow fade-in stagger-4">
+                    <h3 class="text-lg font-semibold mb-2">What's Included</h3>
+                    <ul class="text-sm text-slate-400 space-y-2">
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            Native desktop application
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            <strong>One-click Jupyter launch in any environment</strong>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            All Free tier features included
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            Automatic updates
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+                            14-day Pro trial included
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </footer>
+    </section>
 
-  <script>
-    // Mobile nav toggle
-    document.getElementById('menu')?.addEventListener('click', () => {
-      const nav = document.getElementById('mobileNav');
-      nav.classList.toggle('hidden');
-    });
+    <!-- Closing CTA -->
+    <section class="py-20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass rounded-3xl p-10 text-center glow fade-in">
+                <h2 class="text-3xl font-extrabold tracking-tight">Stop Wrestling with Python Environment Management</h2>
+                <p class="mt-3 text-slate-300">
+                    Get the visual, professional workflow you already love from Docker Desktop, 
+                    but designed specifically for Python environments.
+                </p>
+                <div class="mt-4 bg-emerald-900/20 border border-emerald-600/30 rounded-xl p-4 max-w-2xl mx-auto">
+                    <p class="text-sm text-emerald-300">
+                        ✨ <strong>Start free</strong> for environment discovery. <strong>Upgrade to Pro</strong> when you need security scanning, smart cleanup, and advanced analytics.
+                    </p>
+                </div>
+                <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                    <a class="px-5 py-3 rounded-2xl font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300" href="#download">
+                        Download Free
+                    </a>
+                    <a class="px-5 py-3 rounded-2xl font-semibold border border-emerald-400/50 text-emerald-300 hover:bg-emerald-400/10" href="#pricing">
+                        See Pro Features
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 text-slate-950 font-black">Py</span>
+                        <span class="font-semibold">PyEnvManager</span>
+                    </div>
+                    <p class="mt-3 text-sm text-slate-400">Docker Desktop for Python Virtual Environments.</p>
+                </div>
+                <div class="text-sm text-slate-300 grid grid-cols-2 gap-3">
+                    <a class="hover:text-white" href="#comparison">vs Docker Desktop</a>
+                    <a class="hover:text-white" href="#features">Features</a>
+                    <a class="hover:text-white" href="#pro">Pro</a>
+                    <a class="hover:text-white" href="#pricing">Pricing</a>
+                    <a class="hover:text-white" href="#download">Download</a>
+                    <a class="hover:text-white" href="#">Docs (soon)</a>
+                </div>
+                <div class="text-sm text-slate-400">
+                    <div>© <span id="year"></span> PyEnvManager. All rights reserved.</div>
+                    <div class="mt-2">Professional Python environment management for developers who care about workflow.</div>
+                    <div class="mt-3 bg-emerald-900/20 border border-emerald-600/30 rounded-lg p-3">
+                        <div class="text-emerald-300 font-medium text-xs">🚀 Pro: CVE scanning, cleanup wizards, templates</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    // Render simple heatmap blocks in hero & teams sections (decorative)
-    const heat = document.getElementById('heat');
-    if (heat) {
-      const parent = heat.parentElement;
-      for (let i = 0; i < 48; i++) {
-        const d = document.createElement('div');
-        d.className = 'aspect-square rounded-md bg-white/5';
-        const r = Math.random();
-        if (r > 0.8) d.classList.add('bg-rose-400/30');
-        if (r > 0.95) d.classList.add('bg-emerald-400/40');
-        parent.appendChild(d);
-      }
-    }
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
 
-    const dots = document.getElementById('dots');
-    if (dots) {
-      const parent = dots.parentElement;
-      for (let i = 0; i < 120; i++) {
-        const d = document.createElement('div');
-        d.className = 'aspect-square rounded-sm bg-white/5';
-        const r = Math.random();
-        if (r > 0.8) d.classList.add('bg-rose-400/30');
-        if (r > 0.95) d.classList.add('bg-emerald-400/40');
-        parent.appendChild(d);
-      }
-    }
-  </script>
+        // Mobile nav toggle
+        document.getElementById('menu')?.addEventListener('click', () => {
+            const nav = document.getElementById('mobileNav');
+            if (nav) nav.classList.toggle('hidden');
+        });
+
+        // Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Generate environment heatmap for hero section
+        const envHeatmap = document.getElementById('envHeatmap');
+        if (envHeatmap) {
+            for (let i = 0; i < 36; i++) {
+                const d = document.createElement('div');
+                d.className = 'aspect-square rounded-sm bg-white/5';
+                const r = Math.random();
+                if (r > 0.7) d.classList.add('bg-emerald-400/30');
+                if (r > 0.85) d.classList.add('bg-yellow-400/40');
+                if (r > 0.95) d.classList.add('bg-red-400/40');
+                envHeatmap.appendChild(d);
+            }
+        }
+    </script>
 </body>
 </html>

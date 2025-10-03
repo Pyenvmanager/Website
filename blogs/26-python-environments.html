@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJTQ8458TJ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EJTQ8458TJ');
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Thought I Had 3 Python Envs. Turns Out I Had 26 Eating 45GB — PyEnvManager</title>
+    <meta name="description" content="Like most Python developers, I spin up new environments for different projects. When I finally checked, I had 26 scattered across Conda, venv, uv and Mamba.">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="python environment management, conda, venv, uv, mamba, jupyter notebook, python environments">
+    <meta name="author" content="PyEnvManager">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://pyenvmanager.github.io/Website/blogs/26-python-environments.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://pyenvmanager.github.io/Website/logo-final.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://pyenvmanager.github.io/Website/logo-final.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://pyenvmanager.github.io/Website/logo-final.png">
+    <link rel="shortcut icon" href="https://pyenvmanager.github.io/Website/logo-final.png">
+    <link rel="icon" href="https://pyenvmanager.github.io/Website/logo-final.png">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://pyenvmanager.github.io/Website/blogs/26-python-environments.html">
+    <meta property="og:title" content="I Thought I Had 3 Python Envs. Turns Out I Had 26 Eating 45GB">
+    <meta property="og:description" content="Like most Python developers, I spin up new environments for different projects. When I finally checked, I had 26 scattered across Conda, venv, uv and Mamba.">
+    <meta property="og:image" content="https://pyenvmanager.github.io/Website/logo-final.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://pyenvmanager.github.io/Website/blogs/26-python-environments.html">
+    <meta property="twitter:title" content="I Thought I Had 3 Python Envs. Turns Out I Had 26 Eating 45GB">
+    <meta property="twitter:description" content="Like most Python developers, I spin up new environments for different projects. When I finally checked, I had 26 scattered across Conda, venv, uv and Mamba.">
+    <meta property="twitter:image" content="https://pyenvmanager.github.io/Website/logo-final.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .blog-content {
+            line-height: 1.8;
+        }
+        .blog-content h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #a7f3d0;
+        }
+        .blog-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #99f6e4;
+        }
+        .blog-content p {
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+        }
+        .blog-content ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+            list-style-type: disc;
+        }
+        .blog-content li {
+            margin-bottom: 0.5rem;
+            color: #cbd5e1;
+        }
+        .blog-content strong {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+        .blog-content code {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', monospace;
+            color: #a7f3d0;
+        }
+    </style>
+</head>
+<body class="text-white antialiased">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-black/40 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a class="flex items-center gap-2" href="../index.html" aria-label="PyEnvManager homepage">
+                    <img src="../logo-final.png" alt="PyEnvManager Logo" class="w-8 h-8 rounded-lg object-contain" loading="eager">
+                    <span class="font-semibold tracking-tight text-white">PyEnvManager</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-6 text-sm text-slate-200">
+                    <a class="hover:text-white" href="../index.html#comparison">vs Docker Desktop</a>
+                    <a class="hover:text-white" href="../index.html#features">Features</a>
+                    <a class="hover:text-white" href="../index.html#pricing">Pricing</a>
+                    <a class="hover:text-white" href="../releases.html">Releases</a>
+                    <a class="text-emerald-300 font-semibold" href="../blog.html">Blog</a>
+                    <a class="hover:text-white" href="../index.html#download">Download</a>
+                </nav>
+                <div class="hidden md:flex items-center gap-3">
+                    <a class="px-3 py-2 rounded-xl text-sm font-medium border border-white/20 hover:border-white/30 text-slate-200" href="../index.html#download">Download Free</a>
+                    <a class="px-3 py-2 rounded-xl text-sm font-semibold bg-emerald-400 text-slate-950 hover:bg-emerald-300" href="../index.html#app-demo">See It in Action</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Blog Post -->
+    <article class="py-16 sm:py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Back to Blog -->
+            <a href="../blog.html" class="inline-flex items-center gap-2 text-slate-400 hover:text-emerald-300 transition-colors mb-8">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span>Back to Blog</span>
+            </a>
+
+            <!-- Article Header -->
+            <header class="mb-12 fade-in">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="bg-emerald-400/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-medium">Latest</span>
+                    <span class="text-slate-400 text-sm">September 21, 2025 • 3 min read</span>
+                </div>
+                
+                <h1 class="text-4xl sm:text-5xl font-bold mb-4 leading-tight">
+                    I Thought I Had 3 Python Envs. Turns Out I Had 26 Eating 45GB
+                </h1>
+                
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm">Python</span>
+                    <span class="bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full text-sm">Environment Management</span>
+                    <span class="bg-cyan-500/20 text-cyan-300 px-3 py-1 rounded-full text-sm">Jupyter</span>
+                </div>
+
+                <div class="glass rounded-2xl p-6 glow">
+                    <p class="text-lg text-slate-300 italic">
+                        "Like most Python developers, I spin up new environments for different projects: different dependencies, different Python versions, little experiments I don't want to contaminate. At the time, it felt organized."
+                    </p>
+                </div>
+            </header>
+
+            <!-- Article Content -->
+            <div class="blog-content glass rounded-3xl p-8 sm:p-12 glow fade-in">
+                <p>
+                    Like most Python developers, I spin up new environments for different projects: different dependencies, different Python versions, little experiments I don't want to contaminate. At the time, it felt organized.
+                </p>
+                
+                <p>
+                    I assumed I had maybe 5 or 6 environments active.
+                </p>
+                
+                <p>
+                    When I finally checked, I had <strong>26 scattered across Conda, venv, uv and Mamba</strong>, together chewing up ~45GB on my Windows machine. On my Mac, which I thought was "clean," I found another 4 using ~5GB.
+                </p>
+                
+                <p>
+                    Some of those weren't even mine directly — a couple came from <strong>AI coding agents</strong> I was testing, which silently created new virtual environments in the background. I didn't even realize they were there until I scanned my system.
+                </p>
+
+                <h3>The Daily Pain</h3>
+                <p>It wasn't catastrophic — but it was annoying:</p>
+                <ul>
+                    <li>I couldn't remember which envs were safe to delete.</li>
+                    <li>I didn't know which belonged to which project.</li>
+                    <li>Half the time, Jupyter would throw: <code>ModuleNotFoundError: No module named 'pandas'</code> because I'd launched the wrong kernel.</li>
+                </ul>
+                
+                <p>It wasn't breaking production. But it was a steady drip of wasted time and broken flow.</p>
+
+                <h3>Why Existing Tools Didn't Cut It</h3>
+                <p>Sure, tools like <code>pyenv</code>, <code>uv</code> and <code>conda</code> exist, but they don't:</p>
+                <ul>
+                    <li>Give you visibility into all your environments.</li>
+                    <li>Show which ones are stale, redundant, or wasting space.</li>
+                    <li>Help clean them up safely.</li>
+                    <li>Warn you about dependencies with known vulnerabilities.</li>
+                    <li>Save you from Jupyter/kernel mismatch hell.</li>
+                </ul>
+                
+                <p>And here's a key point:</p>
+                <p>
+                    <strong>Conda has <code>conda env list</code>, but venv and uv don't offer anything like that out of the box.</strong> If you've been creating venvs in random project folders (or AI agents have), you might not even know they exist — until your disk fills up.
+                </p>
+                
+                <p>That's the gap I kept hitting.</p>
+
+                <h3>Scratching My Own Itch</h3>
+                <p>
+                    The idea wasn't to build something complicated. I just wanted the most intuitive, simplest possible experience — a single sleek dashboard that shows everything, so I don't waste time digging around.
+                </p>
+                
+                <p>
+                    That turned into <strong>PyEnvManager</strong> (<a href="https://pyenvmanager.com/" class="text-cyan-400 hover:text-cyan-300">pyenvmanager.com</a>).
+                </p>
+                
+                <p>
+                    It doesn't replace pip, Conda, uv, or Mamba. Instead, it sits on top and gives you visibility + control.
+                </p>
+
+                <h3>What It Does (v0.3.0)</h3>
+                <ul>
+                    <li>Scan environments across Conda, venv, Mamba, and uv.</li>
+                    <li>Show Python version + disk usage, with a simple dashboard of envs and cleanup potential.</li>
+                    <li>Launch Jupyter in the right env with one click (my biggest sanity saver).</li>
+                    <li>Delete old venv, conda, mamba envs (uv coming soon) safely, with a preview of how much space you'll get back.</li>
+                    <li>Show dependencies and highlight packages with known CVEs.</li>
+                    <li>Create new envs with templates or custom packages.</li>
+                </ul>
+                
+                <p>
+                    Even with uv's efficient global caching, it's still handy to have everything in one place — especially for cleaning up old Conda/venv setups and catching mystery envs created by AI tools.
+                </p>
+
+                <h3>What I'd Love to Know</h3>
+                <p>I'm just one dev scratching my own itch, but if this resonates with you:</p>
+                <ul>
+                    <li>Do you also let environments pile up (sometimes without realizing)?</li>
+                    <li>How do you usually keep track of them?</li>
+                    <li>What's the most annoying part of your workflow with Jupyter/envs?</li>
+                </ul>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="mt-12 glass rounded-2xl p-8 text-center glow border border-emerald-500/20 fade-in">
+                <h3 class="text-2xl font-bold mb-4">Try PyEnvManager</h3>
+                <p class="text-slate-300 mb-6">
+                    Scan your system and see exactly how many environments you have
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="../index.html#download" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                        <span>Download Free</span>
+                    </a>
+                    <a href="https://medium.com/@pyenvmanager/i-thought-i-had-3-python-envs-turns-out-i-had-26-eating-45gb-43ab4f7e44f9" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold border border-white/20 hover:border-white/30 transition-colors">
+                        <i data-lucide="external-link" class="w-5 h-5"></i>
+                        <span>Read on Medium</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-10 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <img src="../logo-final.png" alt="PyEnvManager Logo" class="w-8 h-8 rounded-lg">
+                        <span class="font-semibold text-white">PyEnvManager</span>
+                    </div>
+                    <p class="text-slate-400 text-sm">
+                        Docker Desktop for Python environments. Professional environment lifecycle management for developers and teams.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-white mb-3">Product</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a class="hover:text-white" href="../index.html#features">Features</a></li>
+                        <li><a class="hover:text-white" href="../index.html#pricing">Pricing</a></li>
+                        <li><a class="hover:text-white" href="../releases.html">Releases</a></li>
+                        <li><a class="hover:text-white" href="../blog.html">Blog</a></li>
+                        <li><a class="hover:text-white" href="../index.html#download">Download</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-white mb-3">Resources</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a class="hover:text-white" href="https://medium.com/@pyenvmanager" target="_blank" rel="noopener noreferrer">Medium</a></li>
+                        <li><a class="hover:text-white" href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                        <li><a class="hover:text-white" href="../PRIVACY.md">Privacy Policy</a></li>
+                        <li><a class="hover:text-white" href="../TERMS.md">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/5 mt-8 pt-8 text-center text-sm text-slate-400">
+                <p>&copy; 2025 PyEnvManager. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

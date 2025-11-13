@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PyEnvManager — Docker Desktop for Python Virtual Environments</title>
-    <meta name="description" content="PyEnvManager is Docker Desktop for Python Virtual Environments — visual management for conda, mamba, and virtual environments. Professional environment lifecycle management for developers and teams.">
+    <meta name="description" content="PyEnvManager is Docker Desktop for Python Virtual Environments — visual management for conda, mamba, and virtual environments. Professional environment lifecycle management with SBOM export (SPDX, CycloneDX) for enterprise security and compliance.">
     
     <!-- SEO Meta Tags -->
     <meta name="keywords" content="python, virtual environments, conda, mamba, docker desktop, environment management, jupyter, python development, package management">
@@ -34,7 +34,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pyenvmanager.github.io/Website/">
     <meta property="og:title" content="PyEnvManager — Docker Desktop for Python Virtual Environments">
-    <meta property="og:description" content="Visual management for conda, mamba, and virtual environments. Professional environment lifecycle management with one-click Jupyter launch, security scanning, and smart cleanup.">
+    <meta property="og:description" content="Visual management for conda, mamba, and virtual environments. Professional environment lifecycle management with SBOM export, security scanning, and enterprise compliance features.">
     <meta property="og:image" content="https://pyenvmanager.github.io/Website/logo-final.png">
     <meta property="og:site_name" content="PyEnvManager">
     
@@ -42,7 +42,7 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://pyenvmanager.github.io/Website/">
     <meta property="twitter:title" content="PyEnvManager — Docker Desktop for Python Virtual Environments">
-    <meta property="twitter:description" content="Visual management for conda, mamba, and virtual environments. Professional environment lifecycle management with one-click Jupyter launch, security scanning, and smart cleanup.">
+    <meta property="twitter:description" content="Visual management for conda, mamba, and virtual environments. Professional environment lifecycle management with SBOM export, security scanning, and enterprise compliance features.">
     <meta property="twitter:image" content="https://pyenvmanager.github.io/Website/logo-final.png">
     
     <!-- Favicon and App Icons -->
@@ -216,7 +216,10 @@
                     <p class="mt-5 text-xl text-slate-200 leading-relaxed">
                         Stop wasting time on environment chaos. Get <span class="text-cyan-400 font-bold">Docker Desktop for Python environments</span> — a single pane of glass across <span class="text-emerald-300 font-bold">venv</span>, <span class="text-emerald-300 font-bold">Conda</span>, <span class="text-emerald-300 font-bold">Mamba</span>, <span class="text-emerald-300 font-bold">Micromamba</span>, <span class="text-emerald-300 font-bold">Miniconda</span>, and <span class="text-purple-300 font-bold">UV</span>. The same visual, professional workflow you love, designed for Python and AI development.
                     </p>
-                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                    <p class="mt-4 text-lg text-slate-300">
+                        🛡️ <strong class="text-cyan-300">Enterprise Security:</strong> Export industry-standard SBOMs (SPDX, CycloneDX) for compliance, vulnerability tracking, and supply chain transparency.
+                    </p>
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 text-sm">
                         <div class="flex items-center gap-2 text-emerald-300">
                             <i data-lucide="eye" class="w-4 h-4"></i>
                             <span>Instant environment visibility</span>
@@ -232,6 +235,10 @@
                         <div class="flex items-center gap-2 text-orange-300">
                             <i data-lucide="hard-drive" class="w-4 h-4"></i>
                             <span>Smart disk space tracking</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-cyan-300">
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                            <span>SBOM Export (Pro)</span>
                         </div>
                     </div>
                     <div class="mt-8 flex flex-col sm:flex-row gap-3">
@@ -657,6 +664,23 @@
                         <strong>Coming Soon:</strong> Find conda, micromamba envs in project folders, hidden directories, and forgotten locations
                     </div>
                 </div>
+
+                <!-- SBOM Export -->
+                <div class="glass rounded-2xl p-8 hover-lift fade-in stagger-1 glow border border-cyan-500/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-cyan-600 rounded-lg flex items-center justify-center">
+                            <i data-lucide="file-text" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <span class="bg-blue-400/20 text-blue-300 px-2 py-1 rounded text-xs font-medium">Pro</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">SBOM Export</h3>
+                    <p class="text-slate-400 mb-3">
+                        Generate industry-standard Software Bill of Materials (SBOM) for compliance, security audits, and supply chain transparency. Export SPDX, CycloneDX, and custom formats.
+                    </p>
+                    <div class="text-xs text-cyan-300 bg-cyan-900/20 rounded-lg p-2 border border-cyan-700/30">
+                        <strong>Enterprise:</strong> SPDX 2.3 (ISO compliance) • CycloneDX 1.5 (OWASP) • CVE integration • Procurement transparency
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -702,6 +726,7 @@
                     </div>
                     <ul class="space-y-2 text-slate-300 text-sm">
                         <li>• CVE security scanning & vulnerability detection</li>
+                        <li>• SBOM Export (SPDX, CycloneDX) for compliance</li>
                         <li>• Smart cleanup wizards & environment templates</li>
                         <li>• Package management & dependency analysis</li>
                         <li>• Advanced analytics & comprehensive reports</li>
@@ -921,10 +946,10 @@
                         <p class="text-slate-300 mb-4">
                             Advanced collaboration features for development teams who need to share, standardize, and manage Python environments at scale. Generate comprehensive SBOM exports for compliance and security auditing.
                         </p>
-                        <div class="bg-purple-900/20 border border-purple-600/30 rounded-lg p-4">
-                            <p class="text-sm text-purple-300">
-                                🚀 Enhanced team workflows and shared environment management
-                            </p>
+                        <div class="bg-purple-900/20 border border-purple-600/30 rounded-lg p-4 space-y-2">
+                            <p class="text-sm text-purple-300">🚀 Enhanced team workflows and shared environment management</p>
+                            <p class="text-sm text-purple-300">📋 SBOM export for security tool integration (Snyk, Sonatype, JFrog)</p>
+                            <p class="text-sm text-purple-300">🔄 DevSecOps workflow automation</p>
                         </div>
                     </div>
                 </div>
@@ -941,12 +966,13 @@
                             </div>
                         </div>
                         <p class="text-slate-300 mb-4">
-                            Enterprise security, compliance, and governance features for organizations that need the highest levels of control and auditability.
+                            Enterprise security, compliance, and governance features for organizations that need the highest levels of control and auditability. Industry-standard SBOM export meets NTIA requirements and regulatory compliance.
                         </p>
-                        <div class="bg-indigo-900/20 border border-indigo-600/30 rounded-lg p-4">
-                            <p class="text-sm text-indigo-300">
-                                🏢 Advanced security, compliance, and enterprise integrations
-                            </p>
+                        <div class="bg-indigo-900/20 border border-indigo-600/30 rounded-lg p-4 space-y-2">
+                            <p class="text-sm text-indigo-300">🛡️ SPDX 2.3 (ISO/IEC 5962:2021) and CycloneDX 1.5 export</p>
+                            <p class="text-sm text-indigo-300">📊 Supply chain transparency for procurement teams</p>
+                            <p class="text-sm text-indigo-300">🔒 NIST, SOC2, and regulatory compliance support</p>
+                            <p class="text-sm text-indigo-300">🏢 Organization branding and metadata customization</p>
                         </div>
                     </div>
                 </div>

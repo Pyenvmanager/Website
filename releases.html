@@ -24,7 +24,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Releases — PyEnvManager</title>
-        <meta name="description" content="PyEnvManager releases and changelog. Download v0.5.2 with venv support, Python 3.13, SBOM export, enterprise security features, and Python environment management improvements.">
+        <meta name="description" content="PyEnvManager releases and changelog. Download v0.5.3 with one-click terminal access, venv support, Python 3.13, SBOM export, and enterprise security features for Python environment management.">
     
     <!-- SEO Meta Tags -->
     <meta name="keywords" content="pyenvmanager releases, download pyenvmanager, changelog, release notes, python environment manager">
@@ -169,17 +169,17 @@
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-400"></span>
                                 </span>
-                                <h2 class="text-3xl font-bold text-emerald-300">v0.5.2</h2>
+                                <h2 class="text-3xl font-bold text-emerald-300">v0.5.3</h2>
                                 <span class="bg-emerald-400/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-medium">Latest</span>
                             </div>
-                            <p class="text-slate-400">Released: November 22, 2025</p>
+                            <p class="text-slate-400">Released: November 26, 2025</p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-0">
-                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.2/PyEnvManager.Setup.0.5.2.exe" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors">
+                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.3/PyEnvManager.Setup.0.5.3.exe" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors">
                                 <i data-lucide="monitor" class="w-4 h-4"></i>
                                 Windows
                             </a>
-                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.2/PyEnvManager-0.5.2-arm64.dmg" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors">
+                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.3/PyEnvManager-0.5.3-arm64.dmg" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors">
                                 <i data-lucide="laptop" class="w-4 h-4"></i>
                                 macOS
                             </a>
@@ -187,6 +187,57 @@
                     </div>
 
                     <div class="space-y-6">
+                        <!-- Terminal Access (v0.5.3) -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-2">
+                                <i data-lucide="terminal" class="w-5 h-5 text-green-400"></i>
+                                Open Terminal for Environments (v0.5.3)
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-green-300 mb-2">🖥️ One-Click Terminal Access</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• Launch terminal with environment pre-activated and ready to use</li>
+                                        <li>• New green "Open Terminal" button in environment list and details</li>
+                                        <li>• Custom prompt shows environment name for easy identification</li>
+                                        <li>• Cross-platform support (Windows CMD, macOS Terminal.app, Linux terminals)</li>
+                                        <li>• Free for all users - no Pro license required!</li>
+                                    </ul>
+                                </div>
+
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-blue-300 mb-2">✅ Supported Environments</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• Python venv - Full support</li>
+                                        <li>• Micromamba - Full support</li>
+                                        <li>• Mamba - Full support</li>
+                                        <li>• UV - Full support</li>
+                                        <li>• Conda - Coming soon!</li>
+                                    </ul>
+                                </div>
+
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-purple-300 mb-2">📊 Environment List in Create Modal</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• See all existing environments while creating a new one</li>
+                                        <li>• Avoid duplicate names with complete overview</li>
+                                        <li>• Type indicators show environment type (venv, micromamba, conda, etc.)</li>
+                                        <li>• Hover to see Python version for each environment</li>
+                                    </ul>
+                                </div>
+
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-cyan-300 mb-2">📝 Enhanced Creation Logging</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• Clear start/completion messages for venv creation</li>
+                                        <li>• Informational box explaining venv behavior</li>
+                                        <li>• Explicit success confirmation when environment is ready</li>
+                                        <li>• Better visibility into creation process</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Virtual Environment (venv) Support (v0.5.2) -->
                         <div>
                             <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-2">

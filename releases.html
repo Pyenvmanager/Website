@@ -24,7 +24,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Releases — PyEnvManager</title>
-        <meta name="description" content="PyEnvManager releases and changelog. Download v0.5.3 with one-click terminal access, venv support, Python 3.13, SBOM export, and enterprise security features for Python environment management.">
+        <meta name="description" content="PyEnvManager releases and changelog. Download v0.5.4 with improved reliability, fixed venv creation, accurate security scanning, quick directory access, terminal support, and enterprise features.">
     
     <!-- SEO Meta Tags -->
     <meta name="keywords" content="pyenvmanager releases, download pyenvmanager, changelog, release notes, python environment manager">
@@ -169,17 +169,17 @@
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-400"></span>
                                 </span>
-                                <h2 class="text-3xl font-bold text-emerald-300">v0.5.3</h2>
+                                <h2 class="text-3xl font-bold text-emerald-300">v0.5.4</h2>
                                 <span class="bg-emerald-400/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-medium">Latest</span>
                             </div>
-                            <p class="text-slate-400">Released: November 26, 2025</p>
+                            <p class="text-slate-400">Released: December 17, 2025</p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-0">
-                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.3/PyEnvManager.Setup.0.5.3.exe" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors">
+                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.4/PyEnvManager.Setup.0.5.4.exe" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors">
                                 <i data-lucide="monitor" class="w-4 h-4"></i>
                                 Windows
                             </a>
-                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.3/PyEnvManager-0.5.3-arm64.dmg" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors">
+                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.4/PyEnvManager-0.5.4-arm64.dmg" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors">
                                 <i data-lucide="laptop" class="w-4 h-4"></i>
                                 macOS
                             </a>
@@ -187,6 +187,71 @@
                     </div>
 
                     <div class="space-y-6">
+                        <!-- Bug Fixes & Improvements (v0.5.4) -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-2">
+                                <i data-lucide="bug" class="w-5 h-5 text-red-400"></i>
+                                Important Fixes & Improvements (v0.5.4)
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-blue-300 mb-2">🔍 More Accurate Security Scanning</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• Added detection and scanning for system Python installations</li>
+                                        <li>• More reliable security scan results</li>
+                                        <li>• Better understanding of actual risk levels in your environments</li>
+                                        <li>• More accurate compliance reporting</li>
+                                    </ul>
+                                </div>
+
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-green-300 mb-2">✅ Fixed venv Creation Issues</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• Resolved issues where venv creation would sometimes fail</li>
+                                        <li>• Better support for Python installations from Microsoft Store</li>
+                                        <li>• Fixed "command not recognized" errors</li>
+                                        <li>• venv creation now works smoothly every time</li>
+                                    </ul>
+                                </div>
+
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-purple-300 mb-2">🧹 Cleaner Environment Selection</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• Fixed duplicate Python version entries in dropdown</li>
+                                        <li>• Cleaner, easier-to-read Python version selector</li>
+                                        <li>• Faster environment creation workflow</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- New Features (v0.5.4) -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-2">
+                                <i data-lucide="folder-open" class="w-5 h-5 text-cyan-400"></i>
+                                Quick Directory Access (v0.5.4)
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-cyan-300 mb-2">📂 Open Environment Folders Instantly</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• <strong>Environment List:</strong> Folder icon next to each environment path</li>
+                                        <li>• <strong>Environment Details:</strong> "Open Directory" button next to installation path</li>
+                                        <li>• <strong>Scan Results:</strong> "Open Results Folder" button for quick report access</li>
+                                        <li>• Quickly access environment files without manual navigation</li>
+                                        <li>• View scan results and exports with one click</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Acknowledgments -->
+                        <div class="glass rounded-xl p-4 bg-slate-800/30">
+                            <p class="text-slate-300 text-sm">
+                                <strong>Special Thanks:</strong> Thank you to all users who provided feedback, and special recognition to <a href="https://github.com/vmiengineering" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:text-emerald-300 underline">@vmiengineering</a> for continued contributions!
+                            </p>
+                        </div>
+
                         <!-- Terminal Access (v0.5.3) -->
                         <div>
                             <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-2">

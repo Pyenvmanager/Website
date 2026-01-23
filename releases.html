@@ -24,7 +24,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Releases — PyEnvManager</title>
-        <meta name="description" content="PyEnvManager releases and changelog. Download v0.5.4 with improved reliability, fixed venv creation, accurate security scanning, quick directory access, terminal support, and enterprise features.">
+        <meta name="description" content="PyEnvManager releases and changelog. Download v0.5.5 with bug fixes, performance improvements, enhanced cache management, and license scanning optimization.">
     
     <!-- SEO Meta Tags -->
     <meta name="keywords" content="pyenvmanager releases, download pyenvmanager, changelog, release notes, python environment manager">
@@ -169,17 +169,17 @@
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-400"></span>
                                 </span>
-                                <h2 class="text-3xl font-bold text-emerald-300">v0.5.4</h2>
+                                <h2 class="text-3xl font-bold text-emerald-300">v0.5.5</h2>
                                 <span class="bg-emerald-400/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-medium">Latest</span>
                             </div>
-                            <p class="text-slate-400">Released: December 17, 2025</p>
+                            <p class="text-slate-400">Released: January 4, 2026</p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-0">
-                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.4/PyEnvManager.Setup.0.5.4.exe" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors">
+                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.5/PyEnvManager.Setup.0.5.5.exe" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors">
                                 <i data-lucide="monitor" class="w-4 h-4"></i>
                                 Windows
                             </a>
-                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.4/PyEnvManager-0.5.4-arm64.dmg" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors">
+                            <a href="https://github.com/Pyenvmanager/pyenvmanager-releases/releases/download/v0.5.5/PyEnvManager-0.5.5-arm64.dmg" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors">
                                 <i data-lucide="laptop" class="w-4 h-4"></i>
                                 macOS
                             </a>
@@ -187,6 +187,51 @@
                     </div>
 
                     <div class="space-y-6">
+                        <!-- Bug Fixes & Improvements (v0.5.5) -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-2">
+                                <i data-lucide="bug" class="w-5 h-5 text-red-400"></i>
+                                Bug Fixes (v0.5.5)
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-green-300 mb-2">🧹 Environment Deletion Cache Cleanup</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• Fixed: Deleted environments now properly removed from all cache files</li>
+                                        <li>• Impact: After deleting an environment, it will no longer appear in the environment list with zero bytes</li>
+                                        <li>• Details: Implemented automatic cleanup of both last-scan and deep-scan caches when environments are deleted, ensuring cache consistency</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance Improvements (v0.5.5) -->
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-2">
+                                <i data-lucide="zap" class="w-5 h-5 text-yellow-400"></i>
+                                Performance Improvements (v0.5.5)
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-blue-300 mb-2">⚡ License Scanner Optimization</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• Improved: Batch processing for license scanner API calls</li>
+                                        <li>• Impact: Faster license detection during package scanning</li>
+                                        <li>• Details: Reduced API overhead by batching license detection requests</li>
+                                    </ul>
+                                </div>
+
+                                <div class="glass rounded-xl p-4">
+                                    <h4 class="font-semibold text-purple-300 mb-2">🔄 Cache Management Enhancement</h4>
+                                    <ul class="text-slate-300 text-sm space-y-1 ml-4">
+                                        <li>• Added: Automatic stale cache entry cleanup on refresh</li>
+                                        <li>• Impact: More accurate environment listings and improved scan reliability</li>
+                                        <li>• Details: When refreshing environments, the app now automatically removes entries for paths that no longer exist</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Bug Fixes & Improvements (v0.5.4) -->
                         <div>
                             <h3 class="text-xl font-semibold text-white mb-3 flex items-center gap-2">
